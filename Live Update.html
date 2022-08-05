@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)https://s-m.com.sa/r2/test/ -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Live Update</title>
+
+    <script type="text/javascript" src="./Live Update_files/autoUpdate.js.download"></script>
+    <script src="./Live Update_files/jquery.min.js.download"></script>
+
+    <style>
+        .hidden {
+            display: none;
+
+        }
+    </style>
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1068.0" data-gr-ext-installed="">
+    <bodyid="full">
+        <div id="liveData" style="display: none;">
+            <p>Loading Data...</p>
+        </div>
+
+
+
+        <audio id="audio">
+            <source id="sound" src="1.mp3" type="audio/mp3">
+        </audio>
+
+        <audio id="audio2">
+            <source id="sound" src="2.mp3" type="audio/mp3">
+        </audio>
+
+        <p id="demo" style="display:none;"></p>
+
+        <script>
+
+
+
+            window.addEventListener('load', function () {
+
+
+                var x = document.getElementById("audio");
+                var x2 = document.getElementById("audio2");
+
+
+                var xhr = null;
+
+                getXmlHttpRequestObject = function () {
+                    if (!xhr) {
+                        // Create a new XMLHttpRequest object 
+                        xhr = new XMLHttpRequest();
+                    }
+                    return xhr;
+                };
+
+                updateLiveData = function () {
+                    var now = new Date();
+                    // Date string is appended as a query with live data 
+                    // for not to use the cached version 
+                    var url = 'r1s1.php?' + now.getTime();
+                    xhr = getXmlHttpRequestObject();
+                    xhr.onreadystatechange = evenHandler;
+                    // asynchronous requests
+                    xhr.open("GET", url, true);
+                    // Send the request over the network
+                    xhr.send(null);
+                };
+
+                function evenHandler() {
+                    // Check response is ready or not
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+
+
+                        dataDiv = document.getElementById('liveData');
+                        // Set current data text
+                        dataDiv.innerHTML = xhr.responseText;
+                        var xx = xhr.responseText;
+                        //alert(xx);
+                        if (xx == 1) {
+
+                            x.play();
+                            output.classList.add("hidden");
+                            var y = document.getElementById("audio").duration;
+                            y = (y * 1000);
+                            console.log(y);
+                            document.getElementById("demo").innerHTML = y;
+                            document.getElementById("p1").style.display = "block";
+                            document.getElementById("p2").style.display = "none";
+                            setTimeout(function () { document.getElementById("p1").style.display = "none"; document.getElementById("p2").style.display = "block"; }, y);
+
+                            const Http = new XMLHttpRequest();
+                            Http.open("GET", "https://s-m.com.sa/r1/r1m2.php");
+                            Http.send();
+                            setTimeout(function () { stt(); }, y);
+                        }
+
+                        document.getElementById("sound").src = xhr.responseText;
+                        // Update the live data every 1 sec
+                        setTimeout(updateLiveData(), 10000);
+                    }
+
+                }
+
+                async function result(text) {//week3
+
+                    const port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 9600 })
+                    const writer = port.writable.getWriter();
+                }
+
+
+                function stt() {
+
+
+                    // get output div reference
+                    var output = document.getElementById("output");
+                    // get action element reference
+                    var action = document.getElementById("action");
+                    // new speech recognition object
+                    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                    var recognition = new SpeechRecognition();
+
+                    // This runs when the speech recognition service starts
+                    recognition.onstart = function () {
+                        action.innerHTML = "<small>listening, please speak...</small>";
+                    };
+
+                    recognition.onspeechend = function () {
+                        action.innerHTML = "<small>stopped listening</small>";
+                        recognition.stop();
+
+
+
+                    }
+
+                    // This runs when the speech recognition service returns result
+                    recognition.onresult = function (event) {
+                        var transcript = event.results[0][0].transcript;
+                        var confidence = event.results[0][0].confidence;
+                        output.innerHTML = "<b></b> " + transcript;
+
+
+                        output.classList.remove("hidden");
+
+                        const Http = new XMLHttpRequest();
+                        Http.open("GET", "https://s-m.com.sa/r1/e.php?e=" + transcript);
+                        Http.send();
+                        x2.play();
+                        var yy = document.getElementById("audio2").duration;
+                        yy = yy * 1000;
+                        console.log(yy);
+                        document.getElementById("demo").innerHTML = yy;
+                        document.getElementById("p1").style.display = "block";
+                        document.getElementById("p2").style.display = "none";
+                        setTimeout(function () { document.getElementById("p1").style.display = "none"; document.getElementById("p2").style.display = "block"; }, yy);
+
+                        //output.classList.add("hidden");
+
+                        result(textbox.textContent);//week3
+
+
+
+
+                    };
+
+                    // start recognition
+                    recognition.start();
+
+
+                }
+
+
+
+            });
+
+
+            function stt() {
+
+
+                // get output div reference
+                var output = document.getElementById("output");
+                // get action element reference
+                var action = document.getElementById("action");
+                // new speech recognition object
+                var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                var recognition = new SpeechRecognition();
+
+                // This runs when the speech recognition service starts
+                recognition.onstart = function () {
+                    action.innerHTML = "<small>listening, please speak...</small>";
+                };
+
+                recognition.onspeechend = function () {
+                    action.innerHTML = "<small>stopped listening</small>";
+                    recognition.stop();
+
+
+
+                }
+
+                // This runs when the speech recognition service returns result
+                recognition.onresult = function (event) {
+                    var transcript = event.results[0][0].transcript;
+                    var confidence = event.results[0][0].confidence;
+                    output.innerHTML = "<b></b> " + transcript;
+
+
+                    output.classList.remove("hidden");
+
+                    const Http = new XMLHttpRequest();
+                    Http.open("GET", "https://s-m.com.sa/r1/e.php?e=" + transcript);
+                    Http.send();
+                    x2.play();
+                    var yy = document.getElementById("audio2").duration;
+                    yy = yy * 1000;
+                    console.log(yy);
+                    document.getElementById("demo").innerHTML = yy;
+                    document.getElementById("p1").style.display = "block";
+                    document.getElementById("p2").style.display = "none";
+                    setTimeout(function () { document.getElementById("p1").style.display = "none"; document.getElementById("p2").style.display = "block"; }, yy);
+
+                    //output.classList.add("hidden");				
+
+
+
+                };
+
+                // start recognition
+                recognition.lang = 'ar';
+                recognition.start();
+
+
+            }
+
+            function playSound() {
+
+                var x = document.getElementById("audio");
+                x.play();
+                var y = document.getElementById("audio").duration;
+                y = y * 1000;
+                document.getElementById("demo").innerHTML = y;
+                document.getElementById("p1").style.display = "block";
+                document.getElementById("p2").style.display = "none";
+                setTimeout(function () { document.getElementById("p1").style.display = "none"; document.getElementById("p2").style.display = "block"; }, y);
+
+            }
+
+        </script>
+        <div align="center">
+            <br>
+
+            <button onclick="stt()">start</button>
+
+            <p><span id="action"></span></p>
+            <div id="output" class="hide" style="font-size:50px"></div>
+
+        </div>
+
+
+
+
+    </bodyid="full">
+    <div id="h_b_hsin"
+        style="color: initial; font: initial; font-feature-settings: initial; font-kerning: initial; font-optical-sizing: initial; font-palette: initial; font-synthesis: initial; font-variation-settings: initial; forced-color-adjust: initial; text-orientation: initial; text-rendering: initial; -webkit-font-smoothing: initial; -webkit-locale: initial; -webkit-text-orientation: initial; -webkit-writing-mode: initial; writing-mode: initial; zoom: initial; accent-color: initial; place-content: initial; place-items: initial; place-self: initial; alignment-baseline: initial; animation: initial; app-region: initial; appearance: initial; aspect-ratio: initial; backdrop-filter: initial; backface-visibility: initial; background: initial; background-blend-mode: initial; baseline-shift: initial; block-size: initial; border-block: initial; border: initial; border-radius: initial; border-collapse: initial; border-end-end-radius: initial; border-end-start-radius: initial; border-inline: initial; border-start-end-radius: initial; border-start-start-radius: initial; inset: initial; box-shadow: initial; box-sizing: initial; break-after: initial; break-before: initial; break-inside: initial; buffered-rendering: initial; caption-side: initial; caret-color: initial; clear: initial; clip: initial; clip-path: initial; clip-rule: initial; color-interpolation: initial; color-interpolation-filters: initial; color-rendering: initial; color-scheme: initial; columns: initial; column-fill: initial; gap: initial; column-rule: initial; column-span: initial; contain: initial; contain-intrinsic-block-size: initial; contain-intrinsic-size: initial; contain-intrinsic-inline-size: initial; content: initial; content-visibility: initial; counter-increment: initial; counter-reset: initial; counter-set: initial; cursor: initial; cx: initial; cy: initial; d: initial; display: initial; dominant-baseline: initial; empty-cells: initial; fill: initial; fill-opacity: initial; fill-rule: initial; filter: initial; flex: initial; flex-flow: initial; float: initial; flood-color: initial; flood-opacity: initial; grid: initial; grid-area: initial; height: initial; hyphens: initial; image-orientation: initial; image-rendering: initial; inline-size: initial; inset-block: initial; inset-inline: initial; isolation: initial; letter-spacing: initial; lighting-color: initial; line-break: initial; list-style: initial; margin-block: initial; margin: initial; margin-inline: initial; marker: initial; mask: initial; mask-type: initial; max-block-size: initial; max-height: initial; max-inline-size: initial; max-width: initial; min-block-size: initial; min-height: initial; min-inline-size: initial; min-width: initial; mix-blend-mode: initial; object-fit: initial; object-position: initial; offset: initial; opacity: initial; order: initial; origin-trial-test-property: initial; orphans: initial; outline: initial; outline-offset: initial; overflow-anchor: initial; overflow-clip-margin: initial; overflow-wrap: initial; overflow: initial; overscroll-behavior-block: initial; overscroll-behavior-inline: initial; overscroll-behavior: initial; padding-block: initial; padding: initial; padding-inline: initial; page: initial; page-orientation: initial; paint-order: initial; perspective: initial; perspective-origin: initial; pointer-events: initial; position: relative; quotes: initial; r: initial; resize: initial; ruby-position: initial; rx: initial; ry: initial; scroll-behavior: initial; scroll-margin-block: initial; scroll-margin: initial; scroll-margin-inline: initial; scroll-padding-block: initial; scroll-padding: initial; scroll-padding-inline: initial; scroll-snap-align: initial; scroll-snap-stop: initial; scroll-snap-type: initial; scrollbar-gutter: initial; shape-image-threshold: initial; shape-margin: initial; shape-outside: initial; shape-rendering: initial; size: initial; speak: initial; stop-color: initial; stop-opacity: initial; stroke: initial; stroke-dasharray: initial; stroke-dashoffset: initial; stroke-linecap: initial; stroke-linejoin: initial; stroke-miterlimit: initial; stroke-opacity: initial; stroke-width: initial; tab-size: initial; table-layout: initial; text-align: initial; text-align-last: initial; text-anchor: initial; text-combine-upright: initial; text-decoration: initial; text-decoration-skip-ink: initial; text-emphasis: initial; text-emphasis-position: initial; text-indent: initial; text-overflow: initial; text-shadow: initial; text-size-adjust: initial; text-transform: initial; text-underline-offset: initial; text-underline-position: initial; touch-action: initial; transform: initial; transform-box: initial; transform-origin: initial; transform-style: initial; transition: initial; user-select: initial; vector-effect: initial; vertical-align: initial; visibility: initial; border-spacing: initial; -webkit-border-image: initial; -webkit-box-align: initial; -webkit-box-decoration-break: initial; -webkit-box-direction: initial; -webkit-box-flex: initial; -webkit-box-ordinal-group: initial; -webkit-box-orient: initial; -webkit-box-pack: initial; -webkit-box-reflect: initial; -webkit-highlight: initial; -webkit-hyphenate-character: initial; -webkit-line-break: initial; -webkit-line-clamp: initial; -webkit-mask-box-image: initial; -webkit-mask: initial; -webkit-mask-composite: initial; -webkit-perspective-origin-x: initial; -webkit-perspective-origin-y: initial; -webkit-print-color-adjust: initial; -webkit-rtl-ordering: initial; -webkit-ruby-position: initial; -webkit-tap-highlight-color: initial; -webkit-text-combine: initial; -webkit-text-decorations-in-effect: initial; -webkit-text-fill-color: initial; -webkit-text-security: initial; -webkit-text-stroke: initial; -webkit-transform-origin-x: initial; -webkit-transform-origin-y: initial; -webkit-transform-origin-z: initial; -webkit-user-drag: initial; -webkit-user-modify: initial; white-space: initial; widows: initial; width: initial; will-change: initial; word-break: initial; word-spacing: initial; x: initial; y: initial; z-index: 2147483647;">
+        <style type="text/css">
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.svg) format("svg");
+                font-weight: 100;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-100.svg) format("svg");
+                font-weight: 100;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.svg) format("svg");
+                font-weight: 200;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-200.svg) format("svg");
+                font-weight: 200;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.svg) format("svg");
+                font-weight: 300;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-300.svg) format("svg");
+                font-weight: 300;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-regular.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-regular.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-regular.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-regular.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-regular.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-regular.svg) format("svg");
+                font-weight: 400;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.svg) format("svg");
+                font-weight: 500;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-500.svg) format("svg");
+                font-weight: 500;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.svg) format("svg");
+                font-weight: 600;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-600.svg) format("svg");
+                font-weight: 600;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.svg) format("svg");
+                font-weight: 700;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-700.svg) format("svg");
+                font-weight: 700;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.svg) format("svg");
+                font-weight: 800;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-800.svg) format("svg");
+                font-weight: 800;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.svg) format("svg");
+                font-weight: 900;
+                font-style: normal
+            }
+
+            @font-face {
+                font-family: Inter;
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.eot?#iefix) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/Inter/inter-v2-latin-900.svg) format("svg");
+                font-weight: 900;
+                font-style: italic
+            }
+
+            @font-face {
+                font-family: "FontAwesome";
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/fontawesome-webfont.eot);
+                src: url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0) format("embedded-opentype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/fontawesome-webfont.woff2) format("woff2"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/fontawesome-webfont.woff) format("woff"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/fontawesome-webfont.ttf) format("truetype"), url(chrome-extension://emalgedpdlghbkikiaeocoblajamonoh/fonts/fontawesome-webfont.svg#fontawesomeregular) format("svg");
+                font-weight: normal;
+                font-style: normal
+            }
+        </style>
+        <style type="text/css">
+            #h_b_hsin div:empty {
+                display: block !important;
+            }
+
+
+            #__wikibuy__ .__wikibuy.__onTop,
+            body~div:not(#gdx-bubble-host),
+            #piggyWrapper,
+            #honeyContainer,
+            #earny-root {
+                position: absolute !important;
+                z-index: 100000 !important
+            }
+
+            body[data-shop-url="https://www.honeybum.com"] header>.header {
+                z-index: 99999
+            }
+
+            .mm-slideout {
+                z-index: initial
+            }
+
+            .sorry-for-this__empty-styles {
+                position: relative;
+                z-index: 10000
+            }
+        </style>
+        <div style="all: initial;"></div>
+    </div>
+    <div id="torrent-scanner-popup" style="display: none;"></div>
+</body>
+<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+
+</html>
