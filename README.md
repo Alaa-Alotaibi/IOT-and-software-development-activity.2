@@ -4,7 +4,7 @@ This repository contains two files and two output videos:
 
 1- "Live Update.html" : Programming a web page to control the arms using web series API.
 
-2- "sketch.ino" : Aruino code related to the controller.
+2- "sketch.ino" : Arduino code related to the controller.
 
 
 https://user-images.githubusercontent.com/57038620/183225308-007d5910-f7b7-4cf5-97af-fc68e223f1ad.mp4
